@@ -23,8 +23,6 @@ public class ProgramLogic {
 	 	List<JProgram> programs = new ArrayList<JProgram>();
 		String loggerName = LogConfigHelper.getHttpInfoLoggerName();
 		
-     	if(content!=null && content.length()!=0 && synctype!=null && synctype.length()!=0 && method!=null&& method.length()!=0 ){
-			if(synctype.equals("liveProgram")){
 			  //json转为Program
 			   try {
 			 	 jProgramList = jsonToProgramInterface.jsonToProgram(content);
@@ -35,7 +33,7 @@ public class ProgramLogic {
 				 MyLoggerManager.printInfo("json转为节目单对象出错"+e1);
 			 }
 			   
-			//1、直播节目单的发布处理：
+			//直播节目单的发布处理：
 			 if(method.equals("publish")){
 				 try {
 					for(JProgram jprogram:jProgramList){
@@ -58,7 +56,7 @@ public class ProgramLogic {
 					}
 			  }
 			 
-			 //2、直播节目单的下线处理：
+			 //直播节目单的下线处理：
 			 if(method.equals("cancel")){
 				 try {
 	    				for(JProgram jpro:jProgramList){
@@ -70,7 +68,5 @@ public class ProgramLogic {
 					e.printStackTrace();
 				}
 			}
-		 }
-	  }
-    }
+      }
 }

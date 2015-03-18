@@ -70,11 +70,17 @@ public class ChannelAndProgramServlet extends HttpServlet {
 		CreateAndAddLogHelper.createAndAddLogger(loggerName, msg2);
 		
      	if(content!=null && content.length()!=0 && synctype!=null && synctype.length()!=0 && method!=null&& method.length()!=0 ){
-     		ProgramLogic prolLogic = new ProgramLogic();
-     		prolLogic.publishOrCancelProgram(synctype, method, content);
-     		
-     		ChannelLogic channelLogic = new ChannelLogic();
-     		channelLogic.publishOrCancelChannel(synctype, method, content);
+     		if(synctype.equals("liveProgram")){
+	     		ProgramLogic prolLogic = new ProgramLogic();
+	     		prolLogic.publishOrCancelProgram(synctype, method, content);
+     		}
+     		if(synctype.equals("liveContent")){
+	     		ChannelLogic channelLogic = new ChannelLogic();
+	     		channelLogic.publishOrCancelChannel(synctype, method, content);
+     		}
+     	}else{
+     		flag ="1";
+            msg = "不完整请求！";
      	}
      	ResponseObject responseObj = new ResponseObject(flag, msg, null);
      	pwriter.write(gson.toJson(responseObj));

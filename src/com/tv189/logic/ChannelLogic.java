@@ -21,8 +21,6 @@ public class ChannelLogic {
 		Channel channelResult = new Channel();
 		String loggerName = LogConfigHelper.getHttpInfoLoggerName();
 		
-		if(content!=null && content.length()!=0 && synctype!=null && synctype.length()!=0 && method!=null&& method.length()!=0 ){
-			if(synctype.equals("liveContent")){
 	    		 //json转换为Channel
 	    		 try {
 	    			 channel = jsonToChannelInterface.jsonToChannel(content);
@@ -33,7 +31,7 @@ public class ChannelLogic {
 						MyLoggerManager.printInfo("json转为频道对象出错"+e1);
 					}
 	    		 
-	    		//3、直播频道的发布处理：
+	    		//直播频道的发布处理：
 	    		 if(method.equals("publish")){
 		    		 try {
 		    			 channelResult =channelCRUDInterface.findChannelByLiveId(channel.getLiveId());
@@ -49,7 +47,7 @@ public class ChannelLogic {
 						e.printStackTrace();
 					}}
 	    		 
-	    		//4、直播频道的下线处理：
+	    		//直播频道的下线处理：
 	    		 if(method.equals("cancel")){
 	    			 try {
 		    			 channelCRUDInterface.delChannelByLiveId(channel.getLiveId());
@@ -58,8 +56,6 @@ public class ChannelLogic {
 	    		 } catch (SQLException e) {
 						e.printStackTrace();
 					}
-				}
 	    	 }
-		}
-	}
+	   }
 }
