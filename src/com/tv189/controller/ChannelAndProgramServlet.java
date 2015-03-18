@@ -1,9 +1,7 @@
 package com.tv189.controller;
 
-import java.io.BufferedReader;
 import java.net.URLDecoder;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +19,7 @@ import com.tv189.domain.Channel;
 import com.tv189.domain.JProgram;
 import com.tv189.domain.ResponseObject;
 import com.tv189.helper.CreateAndAddLogHelper;
+import com.tv189.helper.GetParaHelper;
 import com.tv189.helper.LogConfigHelper;
 import com.tv189.interfac.ChannelCRUDInterface;
 import com.tv189.interfac.JsonToChannelInterface;
@@ -29,7 +29,6 @@ import com.tv189.interfacImpl.ChannelCRUDInterfaceImpl;
 import com.tv189.interfacImpl.JsonToChannelInterfacImpl;
 import com.tv189.interfacImpl.JsonToProgramInterfacImpl;
 import com.tv189.interfacImpl.ProgramCRUDInterfaceImpl;
-import com.tv189.log.MyLogger;
 import com.tv189.log.MyLoggerManager;
 
 /**
@@ -54,7 +53,7 @@ public class ChannelAndProgramServlet extends HttpServlet {
 			myLoggerManager.initThread();
 		}
        
-     @Override
+    @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
     		throws ServletException, IOException {
 
@@ -68,52 +67,27 @@ public class ChannelAndProgramServlet extends HttpServlet {
 		 * 获取synctype、    method、content参数	 
 		 */
     	String synctype = request.getParameter("synctype");
-    	//2:通过getParameterMap获取synctype
-    	if(synctype==null || synctype.length()==0){
-    		Map<String,String[]> map=request.getParameterMap();
-    		String[] s = map.get("synctype");
-        	if(s!=null && s.length>0){
-        		synctype = s[0];
-             	}
-        	}
     	String method = request.getParameter("method");
-    	//2:通过getParameterMap获取method
-    	if(method==null || method.length()==0){
-    		Map<String,String[]> map=request.getParameterMap();
-    		String[] s = map.get("method");
-        	if(s!=null && s.length>0){
-        		method = s[0];
-             	}
-        	}
-    	//1:通过getParameter获取content
-//    	String content = new String(request.getParameter("content").getBytes("ISO-8859-1"),"UTF-8");
     	String content = request.getParameter("content");
-    	System.out.println(content);
-    	System.out.println(content);
-    	//2:通过getParameterMap获取content
-    	if(content==null || content.length()==0){
-    		Map<String,String[]> map=request.getParameterMap();
-    		String[] s = map.get("content");
-        	if(s!=null && s.length>0){
-        		content = s[0];
-             	}
-        	}
-    	
-	    //3:通过post输入流获取content
-		if(content==null || content.length()==0){
-			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));  
-	     	String line = null;  
-	     	StringBuilder sb = new StringBuilder();  
-	     	while ((line = br.readLine()) != null) {  
-	     	    sb.append(line);  
-	     	} 
-	     	content = sb.toString();
-		   }
-		String msg1 = "转换前,synctype为："+synctype+"method为："+method+"cotent为:"+content;
+
+    	Map<String,String[]> map=request.getParameterMap();
+    	synctype = GetParaHelper.getParaMap(map, synctype);
+    	method = GetParaHelper.getParaMap(map, method);
+    	content = GetParaHelper.getParaMap(map, content);
+
+    	ServletInputStream sInputStream = request.getInputStream();
+		try {
+			content = GetParaHelper.getParaBySteam(sInputStream, content);
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		
+		String msg1 = "转换前,synctype为："+synctype+",method为："+method+",cotent为:"+content;
 		CreateAndAddLogHelper.createAndAddLogger(loggerName, msg1);
 		
 		String msg2 = "一条新请求："+request.getLocalPort()+request.getRemoteAddr()+request.getRequestURI()+request.getQueryString();
 		CreateAndAddLogHelper.createAndAddLogger(loggerName, msg2);
+		
     	/*
 		 * 根据synctype、    method的不同值执行四种相应不同处理
 		 */
@@ -152,11 +126,11 @@ public class ChannelAndProgramServlet extends HttpServlet {
 	    				}
 	    			String msg5 = "Program插入数据库成功";
 					CreateAndAddLogHelper.createAndAddLogger(loggerName, msg5);
-				} catch (SQLException e) {
-					flag="1";
-		 			msg="直播节目单发布失败！！！";
-					e.printStackTrace();
-				}
+					} catch (SQLException e) {
+						flag="1";
+			 			msg="直播节目单发布失败！！！";
+						e.printStackTrace();
+					}
 	    		 }
 	    		 //2、直播节目单的下线处理：
 	    		 if(method.equals("cancel")){
