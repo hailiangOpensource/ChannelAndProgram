@@ -89,7 +89,7 @@ public class ChannelAndProgramServlet extends HttpServlet {
 //    	String content = new String(request.getParameter("content").getBytes("ISO-8859-1"),"UTF-8");
     	String content = request.getParameter("content");
     	System.out.println(content);
-    	
+    	System.out.println(content);
     	//2:通过getParameterMap获取content
     	if(content==null || content.length()==0){
     		Map<String,String[]> map=request.getParameterMap();
