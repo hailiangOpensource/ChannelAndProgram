@@ -78,7 +78,7 @@ public class ChannelAndProgramServlet extends HttpServlet {
 		CreateAndAddLogHelper.createAndAddLogger(loggerName, msg2);
 		
      	if(content!=null && content.length()!=0 && synctype!=null && synctype.length()!=0 && method!=null&& method.length()!=0 ){
-     		ChannelAndPThread.addRequestProxy(new RequestProxy(synctype, method, content));
+     		ChannelAndPThread.addRequestProxy(new RequestProxy(synctype, method, content));//加到业务处理队列等待处理
      	}else{
      		code ="1";
             msg = "parameter error";

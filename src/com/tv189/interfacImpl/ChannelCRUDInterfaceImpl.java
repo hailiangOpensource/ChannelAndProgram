@@ -4,20 +4,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.tv189.domain.Channel;
-import com.tv189.domain.JProgram;
-import com.tv189.domain.Program;
 import com.tv189.interfac.ChannelCRUDInterface;
-import com.tv189.interfac.ProgramCRUDInterface;
 import com.tv189.tools.JdbcConnection;
-import com.tv189.tools.JdbcConnection1;
-import com.tv189.tools.JsonUtil;
 
 public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
-	JdbcConnection1 jdbcConnection = new JdbcConnection1();
+	JdbcConnection jdbcConnection = new JdbcConnection();
 	Statement stmt1 = jdbcConnection.createStatement();
 	
 	@Override
@@ -53,7 +46,7 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 	public void insertChannel(Channel channel) throws SQLException {
 		JdbcConnection jdbcConnection = new JdbcConnection();
 		String sql = "insert into Live_Channel_Info (liveId,name,plats,pinyin,physicalType,cpId,spId,scover,description,nodeId,createTime,updateTime) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-		PreparedStatement stmt = jdbcConnection.createStatement(sql);
+		PreparedStatement stmt = jdbcConnection.createPreparedStatement(sql);
 		if (channel != null) {
 				stmt.setString(1, channel.getLiveId());
 				stmt.setString(2, channel.getCategoryName());

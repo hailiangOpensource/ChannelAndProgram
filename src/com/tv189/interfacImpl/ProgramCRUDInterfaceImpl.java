@@ -11,7 +11,6 @@ import com.tv189.domain.JProgram;
 import com.tv189.domain.Program;
 import com.tv189.interfac.ProgramCRUDInterface;
 import com.tv189.tools.JdbcConnection;
-import com.tv189.tools.JdbcConnection1;
 import com.tv189.tools.JsonUtil;
 
 public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
@@ -26,7 +25,7 @@ public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
 //			stmt.setString(1, liveId);
 //			stmt.setString(2, ProgramListDate);
 //			stmt.addBatch();
-		JdbcConnection1 jdbcConnection = new JdbcConnection1();
+		JdbcConnection jdbcConnection = new JdbcConnection();
 		String sql = "select * from Live_Program_Info where liveId=\""+liveId+"\"and ProgramListDate=\""+ProgramListDate+"\"";
 		Statement stmt = jdbcConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
@@ -59,39 +58,35 @@ public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
 //			stmt.setString(2, ProgramListDate);
 //			stmt.addBatch();
 //			stmt.executeBatch();
-		JdbcConnection1 jdbcConnection = new JdbcConnection1();
+		JdbcConnection jdbcConnection = new JdbcConnection();
 		String sql = "delete  from Live_Program_Info where liveId=\""+liveId+"\"and ProgramListDate=\""+ProgramListDate+"\"";
 		Statement stmt = jdbcConnection.createStatement();
 		stmt.executeUpdate(sql);
 	}
 
 	@Override
-	public void insertPro(JProgram jProgram) throws SQLException {
+	public void insertPro(List<JProgram> jPrograms) throws SQLException {
 		JdbcConnection jdbcConnection = new JdbcConnection();
-		
-		
-		
 		String sql = "insert into Live_Program_Info (liveId,ProgramListDate,liveListId,isTaped,startTime,endTime,title,length,scover,cover,status,activityId,adapter,ext) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		PreparedStatement stmt = jdbcConnection.createStatement(sql);
-		if (jProgram != null) {
-					stmt.setString(1, jProgram.getLiveId());
-					stmt.setString(2, jProgram.getProgramDate());
-					stmt.setString(3, jProgram.getLiveListId());
-					stmt.setInt(4, jProgram.getIsTaped());
-					stmt.setString(5, jProgram.getStartTime());
-					stmt.setString(6, jProgram.getEndTime());
-					stmt.setString(7, jProgram.getTitle());
-					stmt.setString(8, jProgram.getLength());
-					stmt.setString(9, jProgram.getScover());
-					stmt.setString(10, jProgram.getCover());
-					stmt.setInt(11, jProgram.getStatus());
-					stmt.setString(12, jProgram.getActivityId());
-					stmt.setString(13, jProgram.getAdapter());
-					stmt.setString(14, jProgram.getExt());
-					
-					stmt.addBatch();
-					stmt.executeBatch();
-			}
+		PreparedStatement stmt = jdbcConnection.createPreparedStatement(sql);
+		for(JProgram jProgram:jPrograms){
+			stmt.setString(1, jProgram.getLiveId());
+			stmt.setString(2, jProgram.getProgramDate());
+			stmt.setString(3, jProgram.getLiveListId());
+			stmt.setInt(4, jProgram.getIsTaped());
+			stmt.setString(5, jProgram.getStartTime());
+			stmt.setString(6, jProgram.getEndTime());
+			stmt.setString(7, jProgram.getTitle());
+			stmt.setString(8, jProgram.getLength());
+			stmt.setString(9, jProgram.getScover());
+			stmt.setString(10, jProgram.getCover());
+			stmt.setInt(11, jProgram.getStatus());
+			stmt.setString(12, jProgram.getActivityId());
+			stmt.setString(13, jProgram.getAdapter());
+			stmt.setString(14, jProgram.getExt());
+			stmt.addBatch();
+		}
+		stmt.executeBatch();
 	}
 
 
