@@ -22,6 +22,7 @@
     <display-name>ChannelAndProgramServlet</display-name>
     <servlet-name>ChannelAndProgramServlet</servlet-name>
     <servlet-class>com.tv189.controller.ChannelAndProgramServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
     <servlet-name>ChannelAndProgramServlet</servlet-name>

@@ -1,1 +1,4 @@
+/LogConfig.properties
 /com/
+/jdbc.properties
+/log4j.properties
