@@ -17,21 +17,10 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 	public Channel findChannelByLiveId(String liveId) throws SQLException {
 		Channel channel = new Channel();
 		
-		String sql = "select * from Live_Channel_Info where liveId=\""+liveId+"\"";
+		String sql = "select liveId from Live_Channel_Info where liveId=\""+liveId+"\"";
 		ResultSet rs = stmt1.executeQuery(sql);
 		while (rs.next()) {
 			channel.setLiveId(rs.getString("liveId"));
-			channel.setCategoryName(rs.getString("name"));
-			channel.setPlat(rs.getInt("plats"));
-			channel.setTitle(rs.getString("pinyin"));
-			channel.setPhysicalType(rs.getInt("physicalType"));
-			channel.setCpId(rs.getString("cpId"));
-			channel.setSpId(rs.getString("spId"));
-			channel.setSeriesCount(rs.getString("scover"));
-			channel.setDescription(rs.getString("description"));
-			channel.setParentId(rs.getString("nodeId"));
-			channel.setCreateTime(rs.getString("createTime"));
-			channel.setUpdateTime(rs.getString("updateTime"));
 		}
 		return channel;
 	}

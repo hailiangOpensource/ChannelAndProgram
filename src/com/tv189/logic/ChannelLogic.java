@@ -41,7 +41,7 @@ public class ChannelLogic {
 	 						CreateAndAddLogHelper.createAndAddLogger(loggerName, msg8);
 		    			}
 		    			channelCRUDInterface.insertChannel(channel);
-		    			String msg9 = "channel插入数据库成功";
+		    			String msg9 = "成功插入LiveId为"+channel.getLiveId()+"的频道记录";
 						CreateAndAddLogHelper.createAndAddLogger(loggerName, msg9);
 					} catch (SQLException e) {
 						e.printStackTrace();
