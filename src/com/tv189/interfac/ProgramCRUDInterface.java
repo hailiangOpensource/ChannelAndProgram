@@ -8,7 +8,8 @@ import com.tv189.domain.Program;
 
 public interface ProgramCRUDInterface {
 
-	List<JProgram> findProByLiveIdAndDate(String liveId,String ProgramListDate) throws SQLException;
-	void delProByLiveIdAndCreateTime(String liveId,String ProgramListDate) throws SQLException;
-	void insertPro(List<JProgram> jPrograms) throws SQLException;
+	List<JProgram> findProByLiveIdAndDate(String liveId,String ProgramListDate) ;
+	void delProByLiveIdAndCreateTime(List<JProgram> jprograms);
+	void insertPro(List<JProgram> jPrograms) ;
+//	void delProByLiveIdAndCreateTime(String liveId, String programDate);
 }

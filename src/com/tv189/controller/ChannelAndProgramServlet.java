@@ -13,15 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.tv189.domain.RequestProxy;
 import com.tv189.domain.ResponseObject;
 import com.tv189.helper.CreateAndAddLogHelper;
 import com.tv189.helper.GetParaHelper;
 import com.tv189.helper.LogConfigHelper;
 import com.tv189.log.MyLoggerManager;
-import com.tv189.logic.ProgramLogic;
-import com.tv189.logic.ChannelLogic;
 import com.tv189.thread.ChannelAndPThread;
 import com.tv189.thread.TreadPool;
 

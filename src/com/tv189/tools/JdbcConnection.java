@@ -3,13 +3,14 @@ package com.tv189.tools;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 import com.tv189.helper.DBHelper;
 
 public class JdbcConnection { 
-	private PreparedStatement pstmt ;
-	private Statement stmt ;
+	private static PreparedStatement pstmt ;
+	private static Statement stmt ;
 	public static Connection getDBConnection(){
 		String con = DBHelper.getValueByName("con");
 		String characterEncoding = DBHelper.getValueByName("characterEncoding");
@@ -29,7 +30,7 @@ public class JdbcConnection {
 		}
 		return connect;
 	}
-	public PreparedStatement createPreparedStatement(String sql) {
+	public static PreparedStatement createPreparedStatement(String sql) {
 		Connection connect = JdbcConnection.getDBConnection();
 		 try {
 		      pstmt =connect.prepareStatement(sql);
@@ -51,6 +52,35 @@ public class JdbcConnection {
 		}
         return stmt;
 	}
+	
+	  /** 
+     * 关闭连接对象 
+     * 
+     * @param conn 
+     *            连接对象 
+     * @param pstmt 
+     *            预编译对象 
+     * @param rs 
+     *            结果集 
+     */  
+    public static void closeAll(Connection conn, Statement pstmt, ResultSet rs) {  
+        try {  
+            if (rs != null) {  
+                rs.close();  
+            }  
+            if (pstmt != null) {  
+                pstmt.close();  
+            }  
+            if (conn != null) {  
+                pstmt.close();  
+            }  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+    }  
+  
+    
+	
 	public Statement getStmt() {
 		return stmt;
 	}
