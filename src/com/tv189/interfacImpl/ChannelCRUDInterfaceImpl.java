@@ -11,13 +11,11 @@ import com.tv189.tools.JdbcConnection;
 
 public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 	
-	Connection connect = JdbcConnection.getDBConnection();
-	
 	@Override
 	public Channel findChannelByLiveId(String liveId) {
 		Channel channel = new Channel();
 		String sql = "select liveId from Live_Channel_Info where liveId=?";
-		
+		Connection connect = JdbcConnection.getDBConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs=null;
 		try {
@@ -41,6 +39,7 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 	@Override
 	public void delChannelByLiveId(String liveId){
 		String sql = "delete  from Live_Channel_Info where liveId=?";
+		Connection connect = JdbcConnection.getDBConnection();
 		PreparedStatement stmt = null;
 		try {
 			stmt = connect.prepareStatement(sql);
@@ -57,6 +56,7 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 	@Override
 	public void insertChannel(Channel channel){
 		String sql = "insert into Live_Channel_Info (liveId,name,plats,pinyin,physicalType,cpId,spId,scover,description,nodeId,createTime,updateTime) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+		Connection connect = JdbcConnection.getDBConnection();
 		PreparedStatement stmt = null;
 		try {
 			stmt = connect.prepareStatement(sql);
