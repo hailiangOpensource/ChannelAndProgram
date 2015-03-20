@@ -51,7 +51,8 @@ public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
 				pstmt.setString(2, jProgram.getProgramDate());
 				pstmt.addBatch();
 			}
-			pstmt.executeUpdate(sql);
+			pstmt.executeBatch();
+			//pstmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
