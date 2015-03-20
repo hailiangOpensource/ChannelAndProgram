@@ -1,5 +1,6 @@
 package com.tv189.interfacImpl;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,10 +20,13 @@ public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
 		JProgram pro = new JProgram();
 		List<JProgram> programs = new ArrayList<JProgram>();
 		
-		JdbcConnection jdbcConnection = new JdbcConnection();
-		String sql = "select liveId,ProgramListDate from Live_Program_Info where liveId=\""+liveId+"\"and ProgramListDate=\""+ProgramListDate+"\"";
-		Statement stmt = jdbcConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
+		String sql = "select liveId,ProgramListDate from Live_Program_Info where liveId=? and ProgramListDate=?";
+		Connection connect = JdbcConnection.getDBConnection();
+		PreparedStatement stmt = connect.prepareStatement(sql);
+		stmt.setString(1, liveId);
+		stmt.setString(2, ProgramListDate);
+		stmt.addBatch();
+		ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				pro.setLiveId(rs.getString("liveId"));
 				pro.setProgramDate(rs.getString("ProgramListDate"));
@@ -33,17 +37,27 @@ public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
 
 	@Override
 	public void delProByLiveIdAndCreateTime(String liveId,String ProgramListDate) throws SQLException {
-		JdbcConnection jdbcConnection = new JdbcConnection();
-		String sql = "delete  from Live_Program_Info where liveId=\""+liveId+"\"and ProgramListDate=\""+ProgramListDate+"\"";
-		Statement stmt = jdbcConnection.createStatement();
-		stmt.executeUpdate(sql);
+		//JdbcConnection jdbcConnection = new JdbcConnection();
+//		String sql = "delete  from Live_Program_Info where liveId=\""+liveId+"\"and ProgramListDate=\""+ProgramListDate+"\"";
+//		Statement stmt = jdbcConnection.createStatement();
+//		stmt.executeUpdate(sql);
+		
+		String sql = "delete  from Live_Program_Info where liveId=? and ProgramListDate=?";
+		Connection connect = JdbcConnection.getDBConnection();
+		PreparedStatement stmt = connect.prepareStatement(sql);
+			stmt.setString(1, liveId);
+			stmt.setString(2, ProgramListDate);
+			stmt.addBatch();
+			stmt.executeBatch();
+		
 	}
 
 	@Override
 	public void insertPro(List<JProgram> jPrograms) throws SQLException {
-		JdbcConnection jdbcConnection = new JdbcConnection();
+		//JdbcConnection jdbcConnection = new JdbcConnection();
 		String sql = "insert into Live_Program_Info (liveId,ProgramListDate,liveListId,isTaped,startTime,endTime,title,length,scover,cover,status,activityId,adapter,ext) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		PreparedStatement stmt = jdbcConnection.createPreparedStatement(sql);
+		Connection connect = JdbcConnection.getDBConnection();
+		PreparedStatement stmt = connect.prepareStatement(sql);
 		for(JProgram jProgram:jPrograms){
 			stmt.setString(1, jProgram.getLiveId());
 			stmt.setString(2, jProgram.getProgramDate());

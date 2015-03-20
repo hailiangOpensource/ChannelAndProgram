@@ -1,5 +1,6 @@
 package com.tv189.interfacImpl;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,15 +11,19 @@ import com.tv189.interfac.ChannelCRUDInterface;
 import com.tv189.tools.JdbcConnection;
 
 public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
-	JdbcConnection jdbcConnection = new JdbcConnection();
-	Statement stmt1 = jdbcConnection.createStatement();
+	
+	Connection connect = JdbcConnection.getDBConnection();
 	
 	@Override
 	public Channel findChannelByLiveId(String liveId) throws SQLException {
 		Channel channel = new Channel();
+		String sql = "select liveId from Live_Channel_Info where liveId=?";
 		
-		String sql = "select liveId from Live_Channel_Info where liveId=\""+liveId+"\"";
-		ResultSet rs = stmt1.executeQuery(sql);
+		PreparedStatement stmt = connect.prepareStatement(sql);
+		stmt.setString(1, liveId);
+		stmt.addBatch();
+		ResultSet rs = stmt.executeQuery();
+		
 		while (rs.next()) {
 			channel.setLiveId(rs.getString("liveId"));
 		}
@@ -27,15 +32,17 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 
 	@Override
 	public void delChannelByLiveId(String liveId) throws SQLException {
-		String sql = "delete  from Live_Channel_Info where liveId=\""+liveId+"\"";
-		stmt1.executeUpdate(sql);
+		String sql = "delete  from Live_Channel_Info where liveId=?";
+		PreparedStatement stmt = connect.prepareStatement(sql);
+			stmt.setString(1, liveId);
+			stmt.addBatch();
+			stmt.executeBatch();
 	}
 
 	@Override
 	public void insertChannel(Channel channel) throws SQLException {
-		JdbcConnection jdbcConnection = new JdbcConnection();
 		String sql = "insert into Live_Channel_Info (liveId,name,plats,pinyin,physicalType,cpId,spId,scover,description,nodeId,createTime,updateTime) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-		PreparedStatement stmt = jdbcConnection.createPreparedStatement(sql);
+		PreparedStatement stmt = connect.prepareStatement(sql);
 		if (channel != null) {
 				stmt.setString(1, channel.getLiveId());
 				stmt.setString(2, channel.getCategoryName());
@@ -54,7 +61,5 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 				stmt.executeBatch();
 
 			}
-	}
-
-
+	  }
 }
