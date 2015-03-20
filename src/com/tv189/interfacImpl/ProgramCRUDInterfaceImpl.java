@@ -64,8 +64,9 @@ public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
 	public void insertPro(List<JProgram> jPrograms){
 		Connection conn=JdbcConnection.getDBConnection();
 		String sql = "insert into Live_Program_Info (liveId,ProgramListDate,liveListId,isTaped,startTime,endTime,title,length,scover,cover,status,activityId,adapter,ext) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		PreparedStatement pstmt = JdbcConnection.createPreparedStatement(sql);
+		PreparedStatement pstmt=null;
 		try {
+			pstmt= conn.prepareStatement(sql);
 			for(JProgram jProgram:jPrograms){
 				pstmt.setString(1, jProgram.getLiveId());
 				pstmt.setString(2, jProgram.getProgramDate());

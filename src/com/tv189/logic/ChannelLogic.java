@@ -32,27 +32,28 @@ public class ChannelLogic {
 					}
 	    		 
 	    		//直播频道的发布处理：
-	    		 if(method.equals("publish")){
-		    		 try {
-		    			 channelResult =channelCRUDInterface.findChannelByLiveId(channel.getLiveId());
-		    			if(channelResult!=null){
-		    				channelCRUDInterface.delChannelByLiveId(channelResult.getLiveId());
-		    				String msg8 = "插入前，数据库中查询到了LiveId为："+channelResult.getLiveId()+"的频道记录，并将其成功删除";
-	 						CreateAndAddLogHelper.createAndAddLogger(loggerName, msg8);
-		    			}
-		    			channelCRUDInterface.insertChannel(channel);
-		    			String msg9 = "成功插入LiveId为"+channel.getLiveId()+"的频道记录";
-						CreateAndAddLogHelper.createAndAddLogger(loggerName, msg9);
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}}
-	    		 
-	    		//直播频道的下线处理：
-	    		 if(method.equals("cancel")){
-	    			 try {
-		    			 channelCRUDInterface.delChannelByLiveId(channel.getLiveId());
-		    			 String msg10 ="成功删除LiveId为"+channel.getLiveId()+"的频道记录";
-						 CreateAndAddLogHelper.createAndAddLogger(loggerName, msg10);
+		if (method.equals("publish")) {
+			try {
+				channelResult = channelCRUDInterface
+						.findChannelByLiveId(channel.getLiveId());
+				if (channelResult != null) {
+					channelCRUDInterface.delChannelByLiveId(channelResult
+							.getLiveId());
+					String msg8 = "插入前，数据库中查询到了LiveId为："
+							+ channelResult.getLiveId() + "的频道记录，并将其成功删除";
+					CreateAndAddLogHelper.createAndAddLogger(loggerName, msg8);
+				}
+				channelCRUDInterface.insertChannel(channel);
+				String msg9 = "成功插入LiveId为" + channel.getLiveId() + "的频道记录";
+				CreateAndAddLogHelper.createAndAddLogger(loggerName, msg9);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			}else if(method.equals("cancel")){//直播频道的下线处理：
+	    	    try {
+		    	 channelCRUDInterface.delChannelByLiveId(channel.getLiveId());
+		    	 String msg10 ="成功删除LiveId为"+channel.getLiveId()+"的频道记录";
+				 CreateAndAddLogHelper.createAndAddLogger(loggerName, msg10);
 	    		 } catch (SQLException e) {
 						e.printStackTrace();
 					}

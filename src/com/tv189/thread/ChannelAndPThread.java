@@ -20,8 +20,7 @@ public class ChannelAndPThread extends Thread {
 	public void run() {
 		System.out.println("************************业务处理流程启动**************************");
 		while(true){
-			Integer size = logObjects.size();
-			for (Integer i = 0; i < size; i++) {
+			for (; !logObjects.isEmpty();) {
 				RequestProxy proxy = logObjects.poll();
 				synProgramOrChannel(proxy.getSynctype(),proxy.getMethod(),proxy.getContent());
 			}
