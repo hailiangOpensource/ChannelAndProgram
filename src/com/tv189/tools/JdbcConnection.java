@@ -31,17 +31,21 @@ public class JdbcConnection {
 		}
 		return connect;
 	}
-	public static void closeConn(Connection conn,PreparedStatement pstmt,ResultSet rs) throws SQLException{
-		if(conn!=null){
-			conn.close();
-		}
-		if(conn!=null){
-			pstmt.close();
-		}
-		if(conn!=null){
-			rs.close();
-		}
+	public static void closeConn(Connection conn,PreparedStatement pstmt,ResultSet rs){
 		
+			try {
+				if(rs!=null){
+					rs.close();
+				}
+				if(pstmt!=null){
+					pstmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	}
 //	public PreparedStatement createPreparedStatement(String sql) { 
 	

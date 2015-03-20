@@ -14,7 +14,7 @@ import com.tv189.tools.JdbcConnection;
 public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
 	Connection connect = JdbcConnection.getDBConnection();
 	@Override
-	public List<JProgram> findProByLiveIdAndDate(String liveId,String ProgramListDate) throws SQLException{
+	public List<JProgram> findProByLiveIdAndDate(String liveId,String ProgramListDate){
 		JProgram pro = new JProgram();
 		List<JProgram> programs = new ArrayList<JProgram>();
 		
@@ -41,7 +41,7 @@ public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
 	}
 
 	@Override
-	public void delProByLiveIdAndCreateTime(List<JProgram> jPrograms) throws SQLException {
+	public void delProByLiveIdAndCreateTime(List<JProgram> jPrograms){
 		String sql = "delete  from Live_Program_Info where liveId=? and ProgramListDate=?";
 		PreparedStatement stmt =null;
 		try {
@@ -61,7 +61,7 @@ public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
 	}
 
 	@Override
-	public void insertPro(List<JProgram> jPrograms) throws SQLException  {
+	public void insertPro(List<JProgram> jPrograms){
 		String sql = "insert into Live_Program_Info (liveId,ProgramListDate,liveListId,isTaped,startTime,endTime,title,length,scover,cover,status,activityId,adapter,ext) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement stmt = null;
 		try {

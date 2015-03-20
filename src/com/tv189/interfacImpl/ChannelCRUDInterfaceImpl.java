@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import com.tv189.domain.Channel;
 import com.tv189.interfac.ChannelCRUDInterface;
@@ -15,7 +14,7 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 	Connection connect = JdbcConnection.getDBConnection();
 	
 	@Override
-	public Channel findChannelByLiveId(String liveId) throws SQLException {
+	public Channel findChannelByLiveId(String liveId) {
 		Channel channel = new Channel();
 		String sql = "select liveId from Live_Channel_Info where liveId=?";
 		
@@ -40,7 +39,7 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 	}
 
 	@Override
-	public void delChannelByLiveId(String liveId) throws SQLException {
+	public void delChannelByLiveId(String liveId){
 		String sql = "delete  from Live_Channel_Info where liveId=?";
 		PreparedStatement stmt = null;
 		try {
@@ -56,7 +55,7 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 	}
 
 	@Override
-	public void insertChannel(Channel channel) throws SQLException {
+	public void insertChannel(Channel channel){
 		String sql = "insert into Live_Channel_Info (liveId,name,plats,pinyin,physicalType,cpId,spId,scover,description,nodeId,createTime,updateTime) values(?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement stmt = null;
 		try {
