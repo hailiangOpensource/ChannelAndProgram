@@ -9,6 +9,6 @@ import com.tv189.domain.Program;
 public interface ProgramCRUDInterface {
 
 	List<JProgram> findProByLiveIdAndDate(String liveId,String ProgramListDate) throws SQLException;
-	void delProByLiveIdAndCreateTime(String liveId,String ProgramListDate) throws SQLException;
+	void delProByLiveIdAndCreateTime(List<JProgram> jPrograms) throws SQLException;
 	void insertPro(List<JProgram> jPrograms) throws SQLException;
 }

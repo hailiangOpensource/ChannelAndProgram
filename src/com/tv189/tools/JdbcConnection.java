@@ -3,6 +3,7 @@ package com.tv189.tools;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -30,18 +31,20 @@ public class JdbcConnection {
 		}
 		return connect;
 	}
-	public static void closeConn(Connection conn){
+	public static void closeConn(Connection conn,PreparedStatement pstmt,ResultSet rs) throws SQLException{
 		if(conn!=null){
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			conn.close();
+		}
+		if(conn!=null){
+			pstmt.close();
+		}
+		if(conn!=null){
+			rs.close();
 		}
 		
 	}
-//	public PreparedStatement createPreparedStatement(String sql) {
+//	public PreparedStatement createPreparedStatement(String sql) { 
+	
 //		Connection connect = JdbcConnection.getDBConnection();
 //		 try {
 //		      pstmt =connect.prepareStatement(sql);

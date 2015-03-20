@@ -19,13 +19,22 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 		Channel channel = new Channel();
 		String sql = "select liveId from Live_Channel_Info where liveId=?";
 		
-		PreparedStatement stmt = connect.prepareStatement(sql);
-		stmt.setString(1, liveId);
-		stmt.addBatch();
-		ResultSet rs = stmt.executeQuery();
-		
-		while (rs.next()) {
-			channel.setLiveId(rs.getString("liveId"));
+		PreparedStatement stmt = null;
+		ResultSet rs=null;
+		try {
+			stmt = connect.prepareStatement(sql);
+			stmt.setString(1, liveId);
+			stmt.addBatch();
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				channel.setLiveId(rs.getString("liveId"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			JdbcConnection.closeConn(connect, stmt, rs);
 		}
 		return channel;
 	}
@@ -33,17 +42,26 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 	@Override
 	public void delChannelByLiveId(String liveId) throws SQLException {
 		String sql = "delete  from Live_Channel_Info where liveId=?";
-		PreparedStatement stmt = connect.prepareStatement(sql);
+		PreparedStatement stmt = null;
+		try {
+			stmt = connect.prepareStatement(sql);
 			stmt.setString(1, liveId);
 			stmt.addBatch();
 			stmt.executeBatch();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			JdbcConnection.closeConn(connect, stmt, null);
+		}
 	}
 
 	@Override
 	public void insertChannel(Channel channel) throws SQLException {
 		String sql = "insert into Live_Channel_Info (liveId,name,plats,pinyin,physicalType,cpId,spId,scover,description,nodeId,createTime,updateTime) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-		PreparedStatement stmt = connect.prepareStatement(sql);
-		if (channel != null) {
+		PreparedStatement stmt = null;
+		try {
+			stmt = connect.prepareStatement(sql);
+			if (channel != null) {
 				stmt.setString(1, channel.getLiveId());
 				stmt.setString(2, channel.getCategoryName());
 				stmt.setInt(3, channel.getPlat());
@@ -59,7 +77,12 @@ public class ChannelCRUDInterfaceImpl implements ChannelCRUDInterface{
 				
 				stmt.addBatch();
 				stmt.executeBatch();
-
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			JdbcConnection.closeConn(connect, stmt,null);
+		}
+	
 	  }
 }
