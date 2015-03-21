@@ -13,6 +13,10 @@ import com.tv189.interfac.ProgramCRUDInterface;
 import com.tv189.tools.JdbcConnection;
 
 public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
+	/**
+	 * liveIds v1,v2  每个liveId之间已逗号隔开 
+	 * ProgramListDates v1,v2 每个ProgramListDate之间已逗号隔开 
+	 */
 	@Override
 	public List<JProgram> findProByLiveIdAndDate(String liveIds,String ProgramListDates) {
 		JProgram pro = new JProgram();
