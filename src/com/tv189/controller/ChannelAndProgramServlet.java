@@ -31,11 +31,8 @@ public class ChannelAndProgramServlet extends HttpServlet {
 	 @Override
 		public void init() throws ServletException {
 			super.init();
-			ThreadFactory  tp=TreadPool.getInstance().getThreadFactory();
-			Thread t=tp.newThread(new ChannelAndPThread());
-			Thread logger=tp.newThread(new MyLoggerManager());
-			t.start();
-			logger.start();
+			TreadPool.getInstance().execute(new ChannelAndPThread());
+			TreadPool.getInstance().execute(new MyLoggerManager());
 		}
        
     @Override

@@ -14,14 +14,14 @@ import com.tv189.tools.JdbcConnection;
 
 public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
 	@Override
-	public List<JProgram> findProByLiveIdAndDate(String liveId,String ProgramListDate) {
+	public List<JProgram> findProByLiveIdAndDate(String liveIds,String ProgramListDates) {
 		JProgram pro = new JProgram();
 		List<JProgram> programs = new ArrayList<JProgram>();
 		
 		Connection conn = JdbcConnection.getDBConnection();
-		String sql = "select liveId,ProgramListDate from Live_Program_Info where liveId=\""+liveId+"\"and ProgramListDate=\""+ProgramListDate+"\"";
+		String sql = "select liveId,ProgramListDate from Live_Program_Info where liveId in (\""+liveIds+"\") and ProgramListDate in (\""+ProgramListDates+"\")";
 		Statement pstmt = null;
-		ResultSet rs;
+		ResultSet rs = null;
 		try {
 			pstmt=conn.createStatement();
 			rs = pstmt.executeQuery(sql);
@@ -34,7 +34,7 @@ public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
-			JdbcConnection.closeAll(conn, pstmt, null);
+			JdbcConnection.closeAll(conn, pstmt, rs);
 		}
 		return programs;
 	}

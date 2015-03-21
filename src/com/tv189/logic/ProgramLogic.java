@@ -37,10 +37,19 @@ public class ProgramLogic {
 
 		// 直播节目单的发布处理：
 		if (method.equals("publish")) {
+			String liveids="";
+			String programdates="";
 			for (JProgram jprogram : jProgramList) {
-					programs = programCRUDInterface.findProByLiveIdAndDate(
-							jprogram.getLiveId(), jprogram.getProgramDate());
+				liveids+=jprogram.getLiveId()+",";
+				programdates+=jprogram.getProgramDate()+",";
 			}
+			if(liveids.endsWith(",")){
+				liveids=liveids.substring(0,liveids.length()-1);
+			}
+			if(programdates.endsWith(",")){
+				programdates=programdates.substring(0, programdates.length()-1);
+			}
+			programs = programCRUDInterface.findProByLiveIdAndDate(liveids, programdates);
 			if (programs != null) {
 //				for (JProgram jpro : programs) {
 				programCRUDInterface.delProByLiveIdAndCreateTime(programs);
