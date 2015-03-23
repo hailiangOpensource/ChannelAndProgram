@@ -1,6 +1,5 @@
 package com.tv189.tools;
 
-import java.util.List;
 import com.google.gson.Gson;
 import com.tv189.domain.Channel;
 import com.tv189.domain.Program;

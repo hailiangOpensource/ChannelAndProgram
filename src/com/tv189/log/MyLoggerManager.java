@@ -13,11 +13,6 @@ import org.apache.log4j.Logger;
 
 import com.tv189.helper.LogConfigHelper;
 
-//import tools.DynamicResource;
-
-//import com.tv189.log.Constant;
-//import com.tv189.log.DateHelper;
-//import com.tv189.log.LogConfigHelper;
 
 public class MyLoggerManager extends Thread {
 	private static Queue<MyLogger> logObjects = new ConcurrentLinkedQueue<MyLogger>();
@@ -33,7 +28,6 @@ public class MyLoggerManager extends Thread {
 			for (Integer i = 0; i < size; i++) {
 				MyLogger log = logObjects.poll();
 				if(null != log){
-//					System.out.println("log type--------------------------- "+log.getLogType());
 					Logger logger = Logger.getLogger(log.getLogType());
 					Appender appender = logger.getAppender(log.getLogType());
 					if (appender instanceof FileAppender) {
@@ -43,9 +37,6 @@ public class MyLoggerManager extends Thread {
 		                	prefixMap.put(log.getLogType(), logFileName);
 		                } 
 		                System.out.println("logFileName------------------------------------>"+logFileName);
-//		                String dir = DateHelper.getDateToday();
-//		                String todayhourStr = DateHelper.getDateTimeByNowyyyyMMddHHmmss();
-//		                if(Constant.HOUR.equals(log.getLogNameType())) {
 		                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		                String dir = sdf.format(new Date(System.currentTimeMillis()));
 		                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -62,7 +53,6 @@ public class MyLoggerManager extends Thread {
 		                	todayhourStr = dir;
 		                }
                		String fullName = LogConfigHelper.getLogRootPath()+dir+"/"+prefixMap.get(log.getLogType())+todayhourStr+LogConfigHelper.getLogType();//每小时保持一次
-//	                String fullName ="F:/logs/" +dir+"/"+prefixMap.get(log.getLogType())+todayhourStr+".txt";//每小时保持一次
 
                 		System.out.println("fullName--------------------------------------->"+fullName);
                 		

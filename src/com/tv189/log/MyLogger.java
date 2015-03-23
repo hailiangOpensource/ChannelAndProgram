@@ -1,16 +1,9 @@
 package com.tv189.log;
 
-//import org.springframework.stereotype.Repository;
-//import com.tv189.elipapi.constant.Constant;
-
-
-
-//@Repository
 public class MyLogger {
 	private String logType;
 	private String logContent;
 	private String logNameType="1";
-	//private String logNameType =Constant.DAILY;
 
 	public MyLogger(){
 		
@@ -42,7 +35,6 @@ public class MyLogger {
 	}
 
 	public MyLogger(String resLogInfo) {
-		// TODO Auto-generated constructor stub
 		this.logContent=resLogInfo;
 	}
 

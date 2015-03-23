@@ -4,7 +4,6 @@ import java.net.URLDecoder;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
-import java.util.concurrent.ThreadFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -58,14 +57,11 @@ public class ChannelAndProgramServlet extends HttpServlet {
     	content = GetParaHelper.getParaMap(map, content);
 
     	ServletInputStream sInputStream = request.getInputStream();
-		try {
-			content = GetParaHelper.getParaBySteam(sInputStream, content);
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
+		content = GetParaHelper.getParaBySteam(sInputStream, content);
+	
 		content = URLDecoder.decode(content,"utf-8");
 		
-		String msg1 = "转换前,synctype为："+synctype+",method为："+method+",cotent为:"+content+"。     一条新请求："+request.getRemoteAddr()+request.getRequestURI()+request.getQueryString();
+		String msg1 =" 一条新请求："+request.getRemoteAddr()+request.getRequestURI()+request.getQueryString()+ "  转换前,synctype为："+synctype+",method为："+method+",cotent为:"+content;
 		CreateAndAddLogHelper.createAndAddLogger(loggerName, msg1);
 		
      	if(content!=null && content.length()!=0 && synctype!=null && synctype.length()!=0 && method!=null&& method.length()!=0 ){

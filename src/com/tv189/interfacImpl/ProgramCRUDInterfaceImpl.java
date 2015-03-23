@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,92 +12,86 @@ import com.tv189.interfac.ProgramCRUDInterface;
 import com.tv189.tools.JdbcConnection;
 
 public class ProgramCRUDInterfaceImpl implements ProgramCRUDInterface{
-	/**
-	 * liveIds v1,v2  每个liveId之间已逗号隔开 
-	 * ProgramListDates v1,v2 每个ProgramListDate之间已逗号隔开 
-	 */
+	
 	@Override
-	public List<JProgram> findProByLiveIdAndDate(String liveIds,String ProgramListDates) {
+	public List<JProgram> findProByLiveIdAndDate(String liveId,String ProgramListDate){
 		JProgram pro = new JProgram();
 		List<JProgram> programs = new ArrayList<JProgram>();
 		
-		Connection conn = JdbcConnection.getDBConnection();
-		String sql = "select liveId,ProgramListDate from Live_Program_Info where liveId in (\""+liveIds+"\") and ProgramListDate in (\""+ProgramListDates+"\")";
-		Statement pstmt = null;
-		ResultSet rs = null;
+		String sql = "select liveId,ProgramListDate from Live_Program_Info where liveId=? and ProgramListDate=?";
+		Connection connect = JdbcConnection.getDBConnection();
+		PreparedStatement stmt=null;
+		ResultSet rs=null;
 		try {
-			pstmt=conn.createStatement();
-			rs = pstmt.executeQuery(sql);
-			while (rs.next()) {
-				pro.setLiveId(rs.getString("liveId"));
-				pro.setProgramDate(rs.getString("ProgramListDate"));
-				programs.add(pro);
-			}
+			stmt = connect.prepareStatement(sql);
+			stmt.setString(1, liveId);
+			stmt.setString(2, ProgramListDate);
+			stmt.addBatch();
+			rs = stmt.executeQuery();
+				while (rs.next()) {
+					pro.setLiveId(rs.getString("liveId"));
+					pro.setProgramDate(rs.getString("ProgramListDate"));
+					programs.add(pro);
+				}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
-			JdbcConnection.closeAll(conn, pstmt, rs);
+			JdbcConnection.closeAll(connect, stmt, rs);
 		}
 		return programs;
 	}
 
 	@Override
-	public void delProByLiveIdAndCreateTime(List<JProgram> jprograms)  {
-		Connection conn=JdbcConnection.getDBConnection();
-		String sql = "delete  from Live_Program_Info where liveId=?and ProgramListDate=?";
-		PreparedStatement pstmt = null;
+	public void delProByLiveIdAndCreateTime(List<JProgram> jPrograms){
+		String sql = "delete  from Live_Program_Info where liveId=? and ProgramListDate=?";
+		Connection connect = JdbcConnection.getDBConnection();
+		PreparedStatement stmt =null;
 		try {
-			pstmt=conn.prepareStatement(sql);
-			for(JProgram jProgram:jprograms){
-				pstmt.setString(1, jProgram.getLiveId());
-				pstmt.setString(2, jProgram.getProgramDate());
-				pstmt.addBatch();
+			stmt = connect.prepareStatement(sql);
+			for(JProgram jProgram:jPrograms){
+				stmt.setString(1, jProgram.getLiveId());
+				stmt.setString(2, jProgram.getProgramDate());
+				stmt.addBatch();
 			}
-			pstmt.executeBatch();
+			stmt.executeBatch();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
-			JdbcConnection.closeAll(conn, pstmt, null);
+			JdbcConnection.closeAll(connect, stmt,null);
 		}
+		
 	}
 
 	@Override
 	public void insertPro(List<JProgram> jPrograms){
-		Connection conn=JdbcConnection.getDBConnection();
 		String sql = "insert into Live_Program_Info (liveId,ProgramListDate,liveListId,isTaped,startTime,endTime,title,length,scover,cover,status,activityId,adapter,ext) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		PreparedStatement pstmt=null;
+		Connection connect = JdbcConnection.getDBConnection();
+		PreparedStatement stmt = null;
 		try {
-			pstmt= conn.prepareStatement(sql);
+			stmt = connect.prepareStatement(sql);
 			for(JProgram jProgram:jPrograms){
-				pstmt.setString(1, jProgram.getLiveId());
-				pstmt.setString(2, jProgram.getProgramDate());
-				pstmt.setString(3, jProgram.getLiveListId());
-				pstmt.setInt(4, jProgram.getIsTaped());
-				pstmt.setString(5, jProgram.getStartTime());
-				pstmt.setString(6, jProgram.getEndTime());
-				pstmt.setString(7, jProgram.getTitle());
-				pstmt.setString(8, jProgram.getLength());
-				pstmt.setString(9, jProgram.getScover());
-				pstmt.setString(10, jProgram.getCover());
-				pstmt.setInt(11, jProgram.getStatus());
-				pstmt.setString(12, jProgram.getActivityId());
-				pstmt.setString(13, jProgram.getAdapter());
-				pstmt.setString(14, jProgram.getExt());
-				pstmt.addBatch();
+				stmt.setString(1, jProgram.getLiveId());
+				stmt.setString(2, jProgram.getProgramDate());
+				stmt.setString(3, jProgram.getLiveListId());
+				stmt.setInt(4, jProgram.getIsTaped());
+				stmt.setString(5, jProgram.getStartTime());
+				stmt.setString(6, jProgram.getEndTime());
+				stmt.setString(7, jProgram.getTitle());
+				stmt.setString(8, jProgram.getLength());
+				stmt.setString(9, jProgram.getScover());
+				stmt.setString(10, jProgram.getCover());
+				stmt.setInt(11, jProgram.getStatus());
+				stmt.setString(12, jProgram.getActivityId());
+				stmt.setString(13, jProgram.getAdapter());
+				stmt.setString(14, jProgram.getExt());
+				stmt.addBatch();
 			}
-			pstmt.executeBatch();
+			stmt.executeBatch();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
-			JdbcConnection.closeAll(conn, pstmt, null);
+			JdbcConnection.closeAll(connect, stmt,null);
 		}
-
+		
 	}
-
-	
-
-
 }

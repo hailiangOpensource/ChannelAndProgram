@@ -2,15 +2,12 @@ package com.tv189.tools;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 import com.tv189.helper.DBHelper;
 
 public class JdbcConnection { 
-	private static PreparedStatement pstmt ;
-	private static Statement stmt ;
 	public static Connection getDBConnection(){
 		String con = DBHelper.getValueByName("con");
 		String characterEncoding = DBHelper.getValueByName("characterEncoding");
@@ -30,28 +27,6 @@ public class JdbcConnection {
 		}
 		return connect;
 	}
-//	public static PreparedStatement createPreparedStatement(String sql) {
-//		Connection connect = JdbcConnection.getDBConnection();
-//		 try {
-//		      pstmt =connect.prepareStatement(sql);
-//		 }
-//		 catch (Exception e) {
-//		      System.out.print("get data error!");
-//		      e.printStackTrace();
-//		 }
-//		 return pstmt;
-//	}
-//	public Statement createStatement() {
-//		try{
-//		      Connection connect = JdbcConnection.getDBConnection();
-//    		  stmt = connect.createStatement(); 
-//		}
-//		catch (Exception e) {
-//		      System.out.print("get data error!");
-//		      e.printStackTrace();
-//		}
-//        return stmt;
-//	}
 	
 	  /** 
      * 关闭连接对象 
@@ -78,21 +53,4 @@ public class JdbcConnection {
             e.printStackTrace();  
         }  
     }  
-  
-    
-	
-	public Statement getStmt() {
-		return stmt;
-	}
-	public void setStmt(Statement stmt) {
-		this.stmt = stmt;
-	}
-	public PreparedStatement getPstmt() {
-		return pstmt;
-	}
-
-	public void setPstmt(PreparedStatement pstmt) {
-		this.pstmt = pstmt;
-	}
-	
 }

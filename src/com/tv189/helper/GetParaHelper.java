@@ -18,15 +18,21 @@ public class GetParaHelper {
 	return paraName;
 	}
 	
-	public static String getParaBySteam(ServletInputStream sInputStream,String paraName) throws Exception{
+	public static String getParaBySteam(ServletInputStream sInputStream,String paraName){
 		if(paraName==null || paraName.length()==0){
-			BufferedReader br = new BufferedReader(new InputStreamReader(sInputStream,"UTF-8"));  
-	     	String line = null;  
-	     	StringBuilder sb = new StringBuilder();  
-	     	while ((line = br.readLine()) != null) {  
-	     	    sb.append(line);  
-	     	} 
-	     	paraName = sb.toString();
+			BufferedReader br;
+			String line = null;  
+			try {
+				br = new BufferedReader(new InputStreamReader(sInputStream,"UTF-8"));
+				StringBuilder sb = new StringBuilder();  
+		     	while ((line = br.readLine()) != null) {  
+		     	    sb.append(line);  
+		     	} 
+		     	paraName = sb.toString();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
 		   }
 		return paraName;
 		}

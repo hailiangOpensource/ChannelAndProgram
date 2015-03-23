@@ -3,10 +3,6 @@ package com.tv189.thread;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.log4j.Logger;
-
 import com.tv189.domain.RequestProxy;
 import com.tv189.logic.ChannelLogic;
 import com.tv189.logic.ProgramLogic;
@@ -35,11 +31,11 @@ public class ChannelAndPThread extends Thread {
 	private void synProgramOrChannel (String synctype,String method,String content){
  		if(synctype.equals("liveProgram")){
      		ProgramLogic prolLogic = new ProgramLogic();
-     		prolLogic.publishOrCancelProgram(synctype, method, content);
+     		prolLogic.publishOrCancelProgram(method, content);
  		}
  		if(synctype.equals("liveContent")){
      		ChannelLogic channelLogic = new ChannelLogic();
-     		channelLogic.publishOrCancelChannel(synctype, method, content);
+     		channelLogic.publishOrCancelChannel(method, content);
  		}
 	}
 	public void initThread(){
